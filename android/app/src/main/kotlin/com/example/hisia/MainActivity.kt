@@ -1,0 +1,6 @@
+package com.example.hisia
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
