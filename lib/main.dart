@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hisia/pages/account_page.dart';
 import 'dart:developer' as developer;
 
-
-import 'isar_services.dart';
-import 'pages/home_page.dart';
+import 'package:hisia/router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,12 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo
       ),
-      home: AccountScreen(),
+      // home: AccountScreen(),
+      routerConfig: router,
     );
   }
 }

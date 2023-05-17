@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../entities/user.dart';
 import '../isar_services.dart';
@@ -26,6 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
   var accountErrorText = "";
 
   var srv = IsarService();
+  // var cubit = CounterCubit();
 
   void updateAccountText() {
       setState(() {
@@ -37,8 +40,10 @@ class _AccountScreenState extends State<AccountScreen> {
       _formfield.currentState?.reset();
       _clearFormData();
 
+      // cubit.increment();
+      // print(cubit.state);
   }
-  void handleSubmit() async {
+  void handleSubmit(BuildContext context) async {
     var inputEmail = _emailController.value.text;
     var inputPassword = _passwordController.value.text;
     final user = await srv.findUserByEmail(inputEmail);
@@ -67,6 +72,7 @@ class _AccountScreenState extends State<AccountScreen> {
            if(user?.password == inputPassword) {
              //navigate to home page
              developer.log('User logged in successfully', name: 'login');
+             context.go('/home');
            } else {
              developer.log('Invalid credentials, please try again', name: 'login error');
              accountErrorText = "Invalid credentials, please try again";
@@ -80,7 +86,6 @@ class _AccountScreenState extends State<AccountScreen> {
       _emailController.clear();
       _passwordController.clear();
   }
-
   void displayErrorMessage () => showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
@@ -171,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
                 const SizedBox(height: 60,),
                 InkWell(
-                  onTap: handleSubmit,
+                  onTap: () => handleSubmit(context),
                   // onTap: displayErrorMessage,
                   child: Container(
                     height: 50,
@@ -219,5 +224,16 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
       ),
     );
+  }
+}
+
+class CounterCubit extends Cubit<int> {
+  CounterCubit() : super(0);
+  void increment() => emit(state + 1);
+
+  @override
+  void onChange(Change<int> change) {
+    super.onChange(change);
+    print(change);
   }
 }
